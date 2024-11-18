@@ -38,5 +38,3 @@ experiment_data <- data.frame(
 print(experiment_data)
 
 
-C\Users\30NA\Desktop\R\Final Project
-sd ("C:/Users/30NA/Desktop/R/Final Project")
