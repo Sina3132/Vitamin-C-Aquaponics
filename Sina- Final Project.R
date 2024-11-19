@@ -90,3 +90,71 @@ Groupingg <- VitaminC %>%
   group_by(vitamin.C.mg.per.L) %>%
   summarize(mean_yield = mean(Saffron_Yield_g))
 
+#9. Merge or Join data frames (5 points)
+
+# I will create a new 12-rows data frame to merge with my data frame
+newwww <- data.frame(
+  vitamin.C.mg.per.L = c(0, 0, 0, 4, 4, 4, 6, 6, 6, 8, 8, 8),
+  Fish.Mortality = c(5, 10, 8, 12, 6, 7, 9, 11, 5, 6, 8, 10),
+  Feeding.fish.per.kg = c(2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5))
+
+#Now, I can merge 2 data frames
+merged <- merge(VitaminC, newwww, by = "vitamin.C.mg.per.L", all.x = TRUE)
+
+
+#10. Custom function(s) (5 points each; max. 15 points)
+
+
+growth.rate <- function(initial_weight, final_weight) {
+  growth.rate.percentage <- ((final_weight - initial_weight) / initial_weight) * 100
+  return(growth.rate.percentage)}
+VitaminC$growth.rate.percentage <- growth.rate(VitaminC$Initial_Weight_g, VitaminC$Final_Weight_g)
+
+
+cortisol.category <- function(cortisol_level) {
+  if (cortisol_level < 12) {
+    return("Low")
+  } else if (cortisol_level <= 15) {
+    return("Moderate")
+  } else {
+    return("High")}}
+VitaminC$Cortisol.Category <- sapply(VitaminC$Cortisol_Level_ug_dL, cortisol.category)
+
+
+#11. ‘if else’ statement (10 points)
+
+VitaminC$Saffron_Yield_Classification <- ifelse(
+  VitaminC$Saffron_Yield_g >= 6, "High",
+  ifelse(VitaminC$Saffron_Yield_g > 4, "Moderate", "Low")
+)
+print(VitaminC)
+
+
+#12. Using a ‘apply’, ‘lapply’, or ‘sapply’ function (3 points each; max. 12 points)
+
+range <- apply(VitaminC[, c("Initial_Weight_g", "Final_Weight_g", "Saffron_Yield_g")], 
+2, function(x) max(x) - min(x))
+print(range)
+  
+
+mean <- sapply(VitaminC[, c("Initial_Weight_g", "Final_Weight_g", "Saffron_Yield_g")], mean)
+print(mean)
+
+
+#13. Reshaping data with spread() or gather() functions (5 points)
+
+library(tidyverse)
+VitaminC.wide <- spread(VitaminC, key = vitamin.C.mg.per.L, value = Saffron_Yield_Classification)
+
+print(VitaminC.wide)
+
+
+#15. Using a ‘for loop’ (10 points)
+
+VitaminC$Innovative.index <- NA
+
+for (i in 1:nrow(VitaminC)) {
+  VitaminC$Innovative.index[i] <- VitaminC$Final_Weight_g[i] + (VitaminC$Saffron_Yield_g [i] *5)
+}
+
+print(VitaminC)
