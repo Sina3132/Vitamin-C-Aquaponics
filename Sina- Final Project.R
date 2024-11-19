@@ -37,4 +37,56 @@ experiment_data <- data.frame(
 
 print(experiment_data)
 
+#1. A project-specific ‘R’ project + Git Hub repository (10 points)
+#2. Evidence of version control (5 points)
+
+
+#Git Hub repository: https://github.com/Sina3132/Vitamin-C-Aquaponics/blob/main/Sina-%20Final%20Project.R
+
+
+install.packages("writexl")    #making an EXEL FILE
+library(writexl)
+write_xlsx(experiment_data, "C:/Users/30NA/Desktop/R/Final Project/vitaminC-Aquaponics.xlsx")
+
+#3. Reading-in data (2 points)
+
+library(readxl)
+VitaminC <- read_excel("C:/Users/30NA/Desktop/R/Final Project/vitaminC-Aquaponics.xlsx")
+
+head(VitaminC)
+
+#4. Application of the appropriate data storage structure: list, data frame, matrix or array (2 points)
+
+#data frame is the best structure for me because it allows for a mix of data types
+#and it is compatible with most data manipulation and analysis packages like tidyverse.
+  
+#5. Example of indexing (1 point)
+
+#for Initial_weight column
+VitaminC [ ,3]
+
+#for havin entire rows of 8 mg per liter vitamin C
+VitaminC [10:12, ]
+
+
+#6.Sub-set the data (1 point)
+
+#for subset rows for the treatments more than 4 mg/L VitC and Cortisol level more than 12 ug/dL
+subseted <- VitaminC[VitaminC$vitamin.C.mg.per.L > 4 & VitaminC$Cortisol_Level_ug_dL > 12, ]
+print(subseted)
+
+
+#7.Re-ordering (i.e., sorting) data (1 point)
+
+#for sorting data by fish Final Weight in ascending order
+sorted.data <- VitaminC[order(VitaminC$Final_Weight_g), ]
+
+
+#8. Grouping and generating summary statistics (2 points)
+library(dplyr)
+
+#For grouping data by vitamin.C level and calculate the mean of Saffron Yield
+Groupingg <- VitaminC %>%
+  group_by(vitamin.C.mg.per.L) %>%
+  summarize(mean_yield = mean(Saffron_Yield_g))
 
